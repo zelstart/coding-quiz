@@ -1,22 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Coding Quiz</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-  </head>
 
-  <body>
-<!-- Header -->
-<header> </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Coding Quiz</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
 
-<!-- Main Content -->
+<body>
+  <!-- Header -->
+  <header class=header>
 
+    <!-- View High Scores -->
+    <div id="scores">
+      <a href="highscores.html">High Scores</a>
+    </div>
 
-<!-- Footer -->
-<footer> </footer>
+    <!-- Timer -->
+    <div id="timer">
+      Timer
+    </div>
 
-    <script src="assets/js/script.js"></script>
-  </body>
+  </header>
+
+  <!-- Main Content -->
+
+  <div class="container">
+
+    <!-- Title -->
+    <!-- Will be removed from the DOM when clicked -->
+    <div class="child1">
+      <h1>Coding Quiz Challenge</h1>
+    </div>
+
+    <!-- Instructions -->
+    <div class="child1">
+      <h2>Answer the questions within the time limit. Incorrect answers will bring your score down by 10.</h2>
+    </div>
+
+    <!-- Start Button -->
+    <!-- Will be removed from the DOM when clicked -->
+    <div class="child1">
+      <button class="btn" id="start">Start Quiz</button>
+    </div>
+
+    <!-- Multiple Choice -->
+    <div class="child1">
+      <ul>
+        <li class="multipleChoice">lorem</li>
+        <li class="multipleChoice">ipsum</li>
+        <li class="multipleChoice">dolor</li>
+        <li class="multipleChoice">sit</li>
+      </ul>
+    </div>
+
+    <!-- Correct/Incorrect -->
+    <!-- Will appear when a guess has been made, contents of h3 tag will change depending on if the question was answered correctly -->
+    <div class="child2">
+      <h3 id="result">Correct!</h3>
+    </div>
+
+  </div>
+  <!-- Footer -->
+  <footer> </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
