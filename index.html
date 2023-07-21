@@ -11,16 +11,16 @@
 
 <body>
   <!-- Header -->
-  <header class=header>
+  <header class="header">
 
     <!-- View High Scores -->
     <div id="scores">
-      <a href="highscores.html">High Scores</a>
+      <a href="highscores.html">View High Scores</a>
     </div>
 
     <!-- Timer -->
     <div id="timer">
-      Timer
+      <p>Timer:90</p>
     </div>
 
   </header>
@@ -30,24 +30,27 @@
   <div class="container">
 
     <!-- Title -->
-    <!-- Will be removed from the DOM when clicked -->
-    <div class="card1">
+    <div class="card1" id="heading">
       <h1>Coding Quiz Challenge</h1>
     </div>
 
     <!-- Instructions -->
-    <div class="card1">
+    <div class="card1" id="instructions">
       <h2>Answer the questions within the time limit. Incorrect answers will bring your score down by 10.</h2>
     </div>
 
     <!-- Start Button -->
-    <!-- Will be removed from the DOM when clicked -->
-    <div class="card1">
+    <div class="card1" id="startDiv">
       <button class="btn" id="start">Start Quiz</button>
     </div>
 
-    <!-- Multiple Choice -->
-    <div class="card1">
+    <!-- Questions -->
+    <div class = "card3 hidden" id="questions">
+      <p id = "questionsText"></p>
+    </div>
+
+    <!-- Multiple Choice Options -->
+    <div class="card1 hidden" id="options">
       <ul>
         <li class="multipleChoice" id="a"></li>
         <li class="multipleChoice" id="b"></li>
@@ -58,11 +61,12 @@
 
     <!-- Correct/Incorrect -->
     <!-- Will appear when a guess has been made, contents of h3 tag will change depending on if the question was answered correctly -->
-    <div class="card2" id="result">
+    <div class="card2 hidden" id="result">
       <h3></h3>
     </div>
 
   </div>
+
   <!-- Footer -->
   <footer> </footer>
 

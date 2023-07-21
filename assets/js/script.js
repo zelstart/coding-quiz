@@ -1,39 +1,38 @@
 // use getElement to grab HTML elements that we'll need to manipulate
-    // h1 tags - to remove from dom when starting quiz
-    // h2 tags - to modify text content to be questions
-    // li tags (ids a, b, c, d) - to modify text content to multiple choice options
-    // results id - should flash on the screen after an answer is selected, with text depending on correct/incorrect answers
-    // start id - should be removed from the dom after pushed
-    // card1 (align text left)
+var h1Tags = document.getElementsByTagName("h1");
+var h2Tags = document.getElementsByTagName("h2");
+var h3Tags = document.getElementsByTagName("h3");
+var ulTags = document.getElementsByTagName("ul");
+var liTags = document.getElementsByTagName("li");
 
-    var h1Tags = document.getElementsByTagName("h1");
-    var h2Tags = document.getElementsByTagName("h2");
-    var liTags = document.getElementsByTagName("li");
+var startButton = document.getElementById("start");
+var viewScores = document.getElementById("scores");
+var timer = document.getElementById("timer");
 
-    var card1 = document.getElementsByClassName("card1");
-    var card1 = document.getElementsByClassName("card2");
-    
-    var startButton = document.getElementById("start");
-    var resultAlert = document.getElementById("result");
-    var viewScores = document.getElementById("scores");
-    var timer = document.getElementById("timer");
-    //dont know if i'll actually need these ones for the list items, but jic
-    var a = document.getElementById("a");
-    var b = document.getElementById("b");
-    var c = document.getElementById("c");
-    var d = document.getElementById("d");
+var headingDiv = document.getElementById("heading");
+var startDiv = document.getElementById("startDiv");
+var instructionsDiv = document.getElementById("instructions");
+var questionsDiv = document.getElementById("questions");
+var optionsDiv = document.getElementById("options");
+var questionsText = document.getElementById("questionsText");
+var resultAlert = document.getElementById("result");
 
-
+// dont know if i'll actually need these ones for the list items, but jic
+var liA = document.getElementById("a");
+var liB = document.getElementById("b");
+var liC = document.getElementById("c");
+var liD = document.getElementById("d");
 
 
 // global variables 
 var score = 0;
+var highScores = [];
 var timeLeft = 90;
 
 
 
 // Create an object containing all of the questions, options and answers
-var Questions = [{
+var questions = [{
     // question 1
     question: "Commonly used data types DO NOT include:",
     answers: {
@@ -90,19 +89,69 @@ var Questions = [{
 }]
 
 // create the timer
+function setTimer() {
+    var timerInterval = setInterval(function () {
+        timeLeft--;
+        timer.textContent = "Timer: " + timeLeft;
+        if (timeLeft === 0) {
+            clearInterval(timerInterval);
+            // end the quiz, take the user to a page to input their initials and record the score
+        }
 
-// create timer interval
-// timer should decrease by 10 when the user answers incorrectly
 
-// add event listener for start quiz button
+    }, 1000);
+}
 
-// when quiz starts, the h1 tag and start quiz button should be removed from the dom
+// start the timer and modify the elements seen on screen when the quiz button is pressed
+startButton.addEventListener("click", function () {
+    setTimer();
+    // will hide the start button heading and instructions divs
+    startDiv.classList.add("hidden");
+    headingDiv.classList.add("hidden");
+    instructionsDiv.classList.add("hidden");
+
+    questionsDiv.classList.remove("hidden");
+    optionsDiv.classList.remove("hidden");
+});
+
+
+    // will unhide the questions and multiple choice divs
+    // questionsDiv.classList.remove("hidden");
+    // optionsDiv.classList.remove("hidden");
+
+    // will unhide the result alert div
+    // resultAlert.classList.remove("hidden");
+
+
+// start quiz
+// function quiz() {
+//     var userAnswer = "";
+//     questionText.textContent = "";
+//     if (timeLeft > 0) {
+//         h2Tags.textContent = 
+//         liA.textContent = "test"
+//         liB.textContent = "test"
+//         liC.textContent = "test"
+//         liD.textContent = "test"
+//     }
+// }
+
+// if (correctAnswer === userAnswer)
+// if correctAnswer !== userAnswer) {
+// timeLeft - 10}
+
+
 // when quiz starts, the h2 tag should have it's contents changed to one of the questions stored in the object "questions"
 // when quiz starts, the li tags should be populated with the answers for the question currently in the h2 tag
-
 // add event listener for quiz questions
-// when the answer is correct, textcontent of h2 should be "Correct"
-// when the answer is incorrect, textcontent of h2 should be "Incorrect"
+    // when the answer is correct, textcontent of h2 should be "Correct"
+    // when the answer is incorrect, textcontent of h2 should be "Incorrect"
+// after an answer has been chosen, the next question should pop up and cycle through all 5 questions
+// once all 5 questions have been answered, the timer should stop 
+// the user should be taken to a screen with their final score and a place to submit their initials
+// the score and initials should be saved to local storage
+
+// when the user clicks view high scores, it should take them to a page that displays a list of scores and initials
 
 
 
