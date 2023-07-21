@@ -8,7 +8,6 @@ var liTags = document.getElementsByTagName("li");
 var startButton = document.getElementById("start");
 var viewScores = document.getElementById("scores");
 var timer = document.getElementById("timer");
-
 var headingDiv = document.getElementById("heading");
 var startDiv = document.getElementById("startDiv");
 var instructionsDiv = document.getElementById("instructions");
@@ -16,8 +15,9 @@ var questionsDiv = document.getElementById("questions");
 var optionsDiv = document.getElementById("options");
 var questionsText = document.getElementById("questionsText");
 var resultAlert = document.getElementById("result");
+var finalScore = document.getElementById("finalScore");
+var userScore = document.getElementById("user-score");
 
-// dont know if i'll actually need these ones for the list items, but jic
 var liA = document.getElementById("a");
 var liB = document.getElementById("b");
 var liC = document.getElementById("c");
@@ -25,14 +25,15 @@ var liD = document.getElementById("d");
 
 
 // global variables 
-var score = 0;
+// will store scores here? idk if that will actually work
 var highScores = [];
-var timeLeft = 90;
+var timeLeft = 60;
+
 
 
 
 // Create an object containing all of the questions, options and answers
-var questions = [{
+const questions = [{
     // question 1
     question: "Commonly used data types DO NOT include:",
     answers: {
@@ -88,18 +89,36 @@ var questions = [{
     correctAnswer: "d"
 }]
 
+// global variables that will check for whether or not all questions have been answered. 
+// probably not good and descriptive names, but couldn't come up with anything else
+// don't know which function I should put this in, but I think the logic would be:
+    // if (initialQuestion === lastQuestion) {
+    // endQuiz ();
+    // }
+    // and then something to say every time a question is printed to the screen, initialQuestion goes up by 1. not sure how that might work yet.
+var lastQuestion = questions.length;
+var initialQuestion = 0;
+
+
+
 // create the timer
 function setTimer() {
     var timerInterval = setInterval(function () {
-        timeLeft--;
-        timer.textContent = "Timer: " + timeLeft;
-        if (timeLeft === 0) {
-            clearInterval(timerInterval);
+        if (timeLeft > 0) {
+            timeLeft--;
+            timer.textContent = "Timer: " + timeLeft;
+        } else {
             // end the quiz, take the user to a page to input their initials and record the score
+            // endQuiz()
         }
-
-
+        // need an if statement to stop the timer when all questions have been answered ?
+        // stopTimer()
     }, 1000);
+}
+
+// make a function to stop the timer when all questions have been answered?
+function stopTimer() {
+
 }
 
 // start the timer and modify the elements seen on screen when the quiz button is pressed
@@ -109,36 +128,91 @@ startButton.addEventListener("click", function () {
     startDiv.classList.add("hidden");
     headingDiv.classList.add("hidden");
     instructionsDiv.classList.add("hidden");
-
+    // will reveal the divs for questions and multiple choice options
     questionsDiv.classList.remove("hidden");
     optionsDiv.classList.remove("hidden");
+    startQuiz();
 });
 
+// an event listener for answer clicks
+// definitely not sure if this is the right way to do this
+optionsDiv.addEventListener("click", function () {
+    // record which list item was clicked
+})
 
-    // will unhide the questions and multiple choice divs
-    // questionsDiv.classList.remove("hidden");
-    // optionsDiv.classList.remove("hidden");
 
-    // will unhide the result alert div
-    // resultAlert.classList.remove("hidden");
+// functions for showing/hiding the results popup 
+function hideResult() {
+    resultAlert.classList.add("hidden");
+}
 
+function showResult() {
+    resultAlert.classList.remove("hidden");
+}
+
+// hide the quiz elements on the page, reveal the "final results" element
+function endQuiz() {
+    questionsDiv.classList.add("hidden");
+    optionsDiv.classList.add("hidden");
+    finalScore.classList.remove("hidden");
+
+    // user's score should be equal to the time left on the timer
+    userScore = timeLeft;
+    // save the user's initials and the score as an object in localstorage
+
+}
 
 // start quiz
-// function quiz() {
-//     var userAnswer = "";
-//     questionText.textContent = "";
-//     if (timeLeft > 0) {
-//         h2Tags.textContent = 
-//         liA.textContent = "test"
-//         liB.textContent = "test"
-//         liC.textContent = "test"
-//         liD.textContent = "test"
-//     }
-// }
+function startQuiz() {
+    // storage for user answer
+    var userAnswer = "";
+    // need to make userAnswer = the answer they click on
+    userAnswer = "";
 
-// if (correctAnswer === userAnswer)
-// if correctAnswer !== userAnswer) {
-// timeLeft - 10}
+    // if userAnswer is the correct answer
+    if (userAnswer === correctAnswer) {
+        showResult();
+        resultAlert.textContent("Correct!")
+        // make the resultAlert only last a second or two before going away again
+        setTimeout(hideResult, 1500)
+    }
+
+    // if userAnswer is not the correct answer, timer goes down 10s
+    if (userAnswer !== correctAnswer) {
+        // I don't know if this will actually have the intended result, can't test it till I figure out other stuff
+        timeLeft = timeLeft - 10;
+        showResult();
+        resultAlert.textContent("Incorrect!");
+        // make the resultAlert only last a second or two before going away again
+        setTimeout(hideResult, 1500)
+
+    }
+    // Questions and multiple choice options need to be pulled from the questions object and put here
+    // It needs to cycle through all 5 questions, moving to the next one after the previous has an answer selected
+    if (timeLeft > 0) {
+        // by using forEach ? not sure how to use this here
+        questions.forEach();
+        questionsText.textContent = questions.question;
+        liA.textContent = questions.answers.a;
+        liB.textContent = questions.answers.b;
+        liC.textContent = questions.answers.c;
+        liD.textContent = questions.answers.d;
+    }
+
+    // if timer runs out, quiz ends
+    if (timeLeft === 0) {
+        endQuiz();
+    }
+
+    // if all questions have been answered, stop the timer
+    stopTimer();
+}
+
+// event listener for submitting scores
+// submitScore.addEventListener("click", function() {
+
+// })
+
 
 
 // when quiz starts, the h2 tag should have it's contents changed to one of the questions stored in the object "questions"
@@ -147,7 +221,7 @@ startButton.addEventListener("click", function () {
     // when the answer is correct, textcontent of h2 should be "Correct"
     // when the answer is incorrect, textcontent of h2 should be "Incorrect"
 // after an answer has been chosen, the next question should pop up and cycle through all 5 questions
-// once all 5 questions have been answered, the timer should stop 
+// once all 5 questions have been answered, the timer should stop
 // the user should be taken to a screen with their final score and a place to submit their initials
 // the score and initials should be saved to local storage
 

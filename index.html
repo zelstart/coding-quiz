@@ -15,18 +15,17 @@
 
     <!-- View High Scores -->
     <div id="scores">
-      <a href="highscores.html">View High Scores</a>
+      <a href="highscores.html"><p>View High Scores</p></a>
     </div>
 
     <!-- Timer -->
-    <div id="timer">
-      <p>Timer:90</p>
+    <div>
+      <p id="timer">Timer:60</p>
     </div>
 
   </header>
 
   <!-- Main Content -->
-
   <div class="container">
 
     <!-- Title -->
@@ -63,6 +62,15 @@
     <!-- Will appear when a guess has been made, contents of h3 tag will change depending on if the question was answered correctly -->
     <div class="card2 hidden" id="result">
       <h3></h3>
+    </div>
+
+    <!-- Final Score -->
+    <div class="card4 hidden" id="finalScore">
+      <h2 id="user-score"></h2>
+      <form>
+        <label for="initials">Initials:</label>
+        <input type="text" id="initials" name="initials">
+      </form>
     </div>
 
   </div>
