@@ -1,4 +1,4 @@
-// use getElement to grab HTML elements that we'll need to manipulate
+// use getElement to grab HTML elements that we'll need to manipulat. might have gone a little ham here, feels excessive
 var h1Tags = document.getElementsByTagName("h1");
 var h2Tags = document.getElementsByTagName("h2");
 var h3Tags = document.getElementsByTagName("h3");
@@ -17,6 +17,7 @@ var questionsText = document.getElementById("questionsText");
 var resultAlert = document.getElementById("result");
 var finalScore = document.getElementById("finalScore");
 var userScore = document.getElementById("user-score");
+var initialsField = document.getElementById("initials");
 
 var liA = document.getElementById("a");
 var liB = document.getElementById("b");
@@ -27,78 +28,91 @@ var liD = document.getElementById("d");
 // global variables 
 // will store scores here? idk if that will actually work
 var highScores = [];
-var timeLeft = 60;
+var timeLeft = 3;
 
 
 
 
 // Create an object containing all of the questions, options and answers
-const questions = [{
-    // question 1
-    question: "Commonly used data types DO NOT include:",
-    answers: {
-        a: "strings",
-        b: "booleans",
-        c: "alerts",
-        d: "numbers",
+const questions = [
+    {
+        num: 1,
+        question: "Commonly used data types DO NOT include:",
+        correctAnswer: "alerts",
+        answers:
+            [
+                "strings",
+                "booleans",
+                "alerts",
+                "numbers"
+            ]
     },
-    correctAnswer: "alerts"
-},
-{
-    // question 2
-    question: "The condition in an if / else statement is enclosed with _______.",
-    answers: {
-        a: "quotes",
-        b: "curly brackets",
-        c: "parenthesis",
-        d: "square brackets",
+    {
+        num: 2,
+        question: "The condition in an if / else statement is enclosed with _______.",
+        correctAnswer: "curly brackets",
+        answers:
+            [
+                "quotes",
+                "curly brackets",
+                "parenthesis",
+                "square brackets",
+            ]
+
     },
-    correctAnswer: "curly brackets"
-},
-{
-    // question 3
-    question: "Arrays in JavaScript can be used to store _______.",
-    answers: {
-        a: "numbers and strings",
-        b: "other arrays",
-        c: "booleans",
-        d: "all of the above",
+    {
+        num: 3,
+        question: "Arrays in JavaScript can be used to store _______.",
+        correctAnswer: "all of the above",
+        answers:
+            [
+                "numbers and strings",
+                "other arrays",
+                "booleans",
+                "all of the above",
+            ],
     },
-    correctAnswer: "all of the above"
-},
-{
-    // question 4
-    question: "String Values must be enclosed within _______ when being assigned to variables.",
-    answers: {
-        a: "commas",
-        b: "curly brackets",
-        c: "quotes",
-        d: "parenthesis",
+    {
+        num: 4,
+        question: "String Values must be enclosed within _______ when being assigned to variables.",
+        correctAnswer: "quotes",
+        answers:
+            [
+                "commas",
+                "curly brackets",
+                "quotes",
+                "parenthesis",
+            ]
     },
-    correctAnswer: "quotes"
-},
-{
-    // question 5
-    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-    answers: {
-        a: "JavaScript",
-        b: "terminal/bash",
-        c: "for loops",
-        d: "console.log",
-    },
-    correctAnswer: "console.log"
-}]
+    {
+        num: 5,
+        question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+        correctAnswer: "console.log",
+        answers:
+            [
+                "JavaScript",
+                "terminal/bash",
+                "for loops",
+                "console.log",
+            ]
+
+    }]
+
+
 
 // global variables that will check for whether or not all questions have been answered. 
 // probably not good and descriptive names, but couldn't come up with anything else
 // don't know which function I should put this in, but I think the logic would be:
-// if (initialQuestion === lastQuestion) {
+// if (currentQuestion === lastQuestion) {
 // endQuiz ();
 // }
-// and then something to say every time a question is printed to the screen, initialQuestion goes up by 1. not sure how that might work yet.
+// and then something to say every time a question is printed to the screen, currentQuestion goes up by 1. not sure how that might work yet.
 var lastQuestion = questions.length;
-var initialQuestion = 0;
-
+var currentQuestionNum = 0;
+// storage for user answer
+var userAnswer = "";
+// need to make userAnswer = the answer they click on
+userAnswer = "";
 
 
 // create the timer
@@ -109,68 +123,82 @@ function setTimer() {
             timer.textContent = "Timer: " + timeLeft;
         } else {
             // end the quiz, take the user to a page to input their initials and record the score
-            // endQuiz()
+            endQuiz()
         }
         // need an if statement to stop the timer when all questions have been answered ?
-        // 
     }, 1000);
 }
 
+// an event listener for answer clicks
+// definitely not sure if this is the right way to do this
+optionsDiv.addEventListener("click", function () {
+    // record which list item was clicked
+})
+
+// functions for showing/hiding the results popup 
+function hideResult() {
+    resultAlert.classList.add("hidden");
+}
+
+function showResult() {
+    resultAlert.classList.remove("hidden");
+}
+
+
 // hide the quiz elements on the page, reveal the "final results" element
 function endQuiz() {
+    var finalScores = {
+        initials: initialsField.value,
+        score: timeLeft
+    };
     questionsDiv.classList.add("hidden");
     optionsDiv.classList.add("hidden");
     finalScore.classList.remove("hidden");
-
     // user's score should be equal to the time left on the timer
-    userScore = timeLeft;
+    userScore.textContent = "Score: " + timeLeft;
     // save the user's initials and the score as an object in localstorage
+localStorage.setItem("finalScores",JSON.stringify(finalScores))
 
 }
 
-// start quiz
-function startQuiz() {
-    // storage for user answer
-    var userAnswer = "";
-    // need to make userAnswer = the answer they click on
-    userAnswer = "";
 
-    // Questions and multiple choice options need to be pulled from the questions object and put here
-    // It needs to cycle through all 5 questions, moving to the next one after the previous has an answer selected
+    // start quiz
+    function startQuiz() {
+        i = 0;
+        // Questions and multiple choice options need to be pulled from the questions object and put here
+        // It needs to cycle through all 5 questions, moving to the next one after the previous has an answer selected
+        questionsText.textContent = questions[i].question;
+        liA.textContent = questions[i].answers[0];
+        liB.textContent = questions[i].answers[1];
+        liC.textContent = questions[i].answers[2];
+        liD.textContent = questions[i].answers[3];
 
-    questionsText.textContent = questions.question;
-    liA.textContent = questions.answers.a;
-    liB.textContent = questions.answers.b;
-    liC.textContent = questions.answers.c;
-    liD.textContent = questions.answers.d;
+        // if userAnswer is the correct answer
+        if (userAnswer === correctAnswer) {
+            showResult();
+            resultAlert.textContent("Correct!")
+            // make the resultAlert only last a second or two before going away again
+            setTimeout(hideResult, 1500)
+        }
 
+        // if userAnswer is not the correct answer, timer goes down 10s
+        if (userAnswer !== correctAnswer) {
+            // I don't know if this will actually have the intended result, can't test it till I figure out other stuff
+            timeLeft = timeLeft - 10;
+            showResult();
+            resultAlert.textContent("Incorrect!");
+            // make the resultAlert only last a second or two before going away again
+            setTimeout(hideResult, 1500)
 
-    // if userAnswer is the correct answer
-    if (userAnswer === correctAnswer) {
-        showResult();
-        resultAlert.textContent("Correct!")
-        // make the resultAlert only last a second or two before going away again
-        setTimeout(hideResult, 1500)
+        }
+        // if timer runs out, quiz ends
+        if (timeLeft === 0) {
+            endQuiz();
+        }
+
+        // if all questions have been answered, stop the timer
+        // stopTimer();
     }
-
-    // if userAnswer is not the correct answer, timer goes down 10s
-    if (userAnswer !== correctAnswer) {
-        // I don't know if this will actually have the intended result, can't test it till I figure out other stuff
-        timeLeft = timeLeft - 10;
-        showResult();
-        resultAlert.textContent("Incorrect!");
-        // make the resultAlert only last a second or two before going away again
-        setTimeout(hideResult, 1500)
-
-    }
-    // if timer runs out, quiz ends
-    if (timeLeft === 0) {
-        endQuiz();
-    }
-
-    // if all questions have been answered, stop the timer
-    stopTimer();
-}
 
 // event listener for submitting scores
 // submitScore.addEventListener("click", function() {
@@ -191,24 +219,11 @@ startButton.addEventListener("click", function () {
     startQuiz();
 });
 
-// an event listener for answer clicks
-// definitely not sure if this is the right way to do this
-optionsDiv.addEventListener("click", function () {
-    // record which list item was clicked
-})
+viewScores.addEventListener("click", function() {
 
 
-// functions for showing/hiding the results popup 
-function hideResult() {
-    resultAlert.classList.add("hidden");
 }
-
-function showResult() {
-    resultAlert.classList.remove("hidden");
-}
-
-
-
+)
 
 
 // when quiz starts, the h2 tag should have it's contents changed to one of the questions stored in the object "questions"

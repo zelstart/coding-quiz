@@ -8,17 +8,25 @@
 
 body {
     background: var(--bg);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     align-content: center;
     margin:auto;
     max-width: 98vw;
 }
 
 .header {
-    border: 2px solid red;
     display: flex;
     justify-content: space-between;
     margin: 5px 0px;
+}
+
+.footer {
+    height: 75px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    background-color: var(--accent);
 }
 
 header div {
@@ -26,12 +34,10 @@ header div {
 }
 
 #scores {
-    border: 2px solid blue;
     padding: 5px;
 }
 
 #timer {
-    border: 2px solid blue;
     padding: 5px;
 }
 
@@ -57,16 +63,15 @@ a {
 
 #questionsText {
     font-size: 1.2em;
+    font-weight: 600;
 }
 
 .container {
-    border: 2px solid red;
     display:flex;
     flex-direction: column;
 }
 
 .card1 {
-    border: 2px solid blue;
     align-self: center;
     width: 50vw;
     padding: 3px;
@@ -75,7 +80,6 @@ a {
 }
 
 .card2 {
-    border: 2px solid blue;
     align-self: center;
     width: 50vw;
     padding: 3px;
@@ -85,7 +89,6 @@ a {
 }
 
 .card3 {
-    border: 2px solid blue;
     align-self: center;
     width: 50vw;
     padding: 3px;
@@ -94,7 +97,6 @@ a {
 }
 
 .card4 {
-    border: 2px solid blue;
     align-self: center;
     width: 50vw;
     padding: 3px;
@@ -120,7 +122,7 @@ a {
 }
 
 .btn {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     background: var(--accent);
     padding: 10px 15px 10px 15px;
     border-radius: 8px; 

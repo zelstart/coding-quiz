@@ -31,7 +31,7 @@ THEN I can save my initials and score
 ## Screenshots
 
 ## Credits
-[How to make a js quiz](https://www.sitepoint.com/simple-javascript-quiz/)  - mostly just used the format for making an array containing the questions and answers.
+[How to make a js quiz](https://www.codingnepalweb.com/quiz-app-with-timer-javascript/)  - mostly just used the format for making an array containing the questions and answers.
 
 
 ## License
