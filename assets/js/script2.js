@@ -2,6 +2,7 @@
 var h1Tags = document.getElementsByTagName("h1");
 var h2Tags = document.getElementsByTagName("h2");
 var h3Tags = document.getElementsByTagName("h3");
+var liTags = document.getElementsByTagName("li");
 var startButton = document.getElementById("start");
 var viewScores = document.getElementById("scores");
 var timer = document.getElementById("timer");
@@ -10,7 +11,8 @@ var startDiv = document.getElementById("startDiv");
 var instructionsDiv = document.getElementById("instructions");
 var questionsDiv = document.getElementById("questions");
 var optionsDiv = document.getElementById("options");
-var choiceList = document.getElementById("choiceList")
+var choiceList = document.getElementById("choiceList");
+var multipleChoice = document.getElementById("multipleChoice");
 var questionsText = document.getElementById("questionsText");
 var resultAlertDiv = document.getElementById("result");
 var resultAlertText = document.getElementById("resultAlert");
@@ -116,7 +118,16 @@ function setTimer() {
 
 // an event listener for answer clicks
 optionsDiv.addEventListener("click", function (event) {
-    userChoice = event.target.value;
+    var target = event.target;
+    if (target.matches(".multipleChoice")) {
+        var state = choiceList.getAttribute("data-click");
+        targetValue = target.textContent;
+        userChoice = targetValue;
+        if (state === "false") {
+            choiceList.setAttribute("data-click", "true");
+            console.log(state); // state still says false, but it should be true?
+        }
+    }
 })
 
 
@@ -153,21 +164,22 @@ function viewHighScores() {
 // start quiz
 function startQuiz() {
     if (i < questions.length) {
-    questionsText.textContent = questions[i].question;
-    liA.textContent = questions[i].answers[0];
-    liB.textContent = questions[i].answers[1];
-    liC.textContent = questions[i].answers[2];
-    liD.textContent = questions[i].answers[3];
+        questionsText.textContent = questions[i].question;
+        liA.textContent = questions[i].answers[0];
+        liB.textContent = questions[i].answers[1];
+        liC.textContent = questions[i].answers[2];
+        liD.textContent = questions[i].answers[3];
     }
-    
-    // need to figure out how to make it wait until the event listener for the user's choice has heard the click and updated the value of userChoice
 
-    if (i < questions.length) {
-        checkAnswer();
-        i++;
-    }
-    if (i > questions.length) { // redundant because of setTimer function?
-        endQuiz()
+    // need to figure out how to make it wait until the event listener for the user's choice has heard the click and updated the value of userChoice
+    var clickState = choiceList.getAttribute("data-click");
+
+    if (clickState === "true") {
+
+        if (i < questions.length) {
+            checkAnswer();
+            i++;
+        }
     }
 }
 
