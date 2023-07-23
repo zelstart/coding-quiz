@@ -26,10 +26,11 @@ var liD = document.getElementById("d");
 
 // global variables 
 // will store scores here? idk if that will actually work
-var highScores = [];
-var timeLeft = 60;
-i = 0;
-correct = questions[i].correctAnswer;
+var highScores = []; // storage for high scores
+var timeLeft = 60; // number of seconds timer starts with
+var userChoice = ""; // container for user choice
+var i = 0; // will be our index number to advance through the questions array
+var correct = questions[i].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
 
 
 
@@ -99,39 +100,25 @@ const questions = [
     }]
 
 
-// global variables that will check for whether or not all questions have been answered. 
-// probably not good and descriptive names, but couldn't come up with anything else
-// don't know which function I should put this in, but I think the logic would be:
-// if (currentQuestion === lastQuestion) {
-// endQuiz ();
-// }
-// and then something to say every time a question is printed to the screen, currentQuestion goes up by 1. not sure how that might work yet.
-var lastQuestion = questions.length;
-var currentQuestionNum = 0;
-// storage for user answer
-var userChoice = "";
-
 
 
 // create the timer
 function setTimer() {
     var timerInterval = setInterval(function () {
-        if (timeLeft > 0) {
+        if (timeLeft > 0 && i > questions.length) {
             timeLeft--;
             timer.textContent = "Timer: " + timeLeft;
         } else {
-            // end the quiz, take the user to a page to input their initials and record the score
             endQuiz()
         }
-        // need an if statement to stop the timer when all questions have been answered ?
     }, 1000);
 }
 
 // an event listener for answer clicks
-// definitely not sure if this is the right way to do this
-optionsDiv.addEventListener("click", function () {
-    userChoice = ""
+optionsDiv.addEventListener("click", function (event) {
+    userChoice = event.target.value;
 })
+
 
 // functions for showing/hiding the results popup 
 function hideResult() {
@@ -145,92 +132,66 @@ function showResult() {
 
 // hide the quiz elements on the page, reveal the "final results" element
 function endQuiz() {
-    var finalScores = {
-        initials: initialsField.value,
-        score: timeLeft
-    };
     questionsDiv.classList.add("hidden");
     optionsDiv.classList.add("hidden");
     finalScore.classList.remove("hidden");
-    // user's score should be equal to the time left on the timer
-    userScore.textContent = "Score: " + timeLeft;
-    // save the user's initials and the score as an object in localstorage
-    // need to make it not overwrite old scores, just add
-    localStorage.setItem("finalScores", JSON.stringify(finalScores))
 }
 
+// hides all elements on screen, reveals highScores element
 function viewHighScores() {
     startDiv.classList.add("hidden");
     headingDiv.classList.add("hidden");
     instructionsDiv.classList.add("hidden");
+    questionsDiv.classList.add("hidden");
+    optionsDiv.classList.add("hidden");
+    finalScore.classList.add("hidden")
     highScoresDiv.classList.remove("hidden");
+
 }
 
 
 // start quiz
 function startQuiz() {
-    // i think this will work? when a choice is made, i++? 
-
-
-    // Questions and multiple choice options need to be pulled from the questions object and put here
-    // It needs to cycle through all 5 questions, moving to the next one after the previous has an answer selected
     questionsText.textContent = questions[i].question;
     liA.textContent = questions[i].answers[0];
     liB.textContent = questions[i].answers[1];
     liC.textContent = questions[i].answers[2];
     liD.textContent = questions[i].answers[3];
 
-    // need to make it record the answer clicked by the user
+    // need to figure out how to make it wait until the event listener for the user's choice has heard the click and updated the value of userChoice
 
-    checkAnswer();
+    if (i < questions.length) {
+        checkAnswer();
+        i++;
+    }
+    if (i > questions.length) { // redundant because of startTimer function?
+        endQuiz()
+    }
 }
 
-
-
+// checks user's answer against current question's correct answer
 function checkAnswer() {
-    // if userChoice is the correct answer
-    if (userChoice === correctAnswer) {
+    if (userChoice === correct) {
         showResult();
-        // these are giving me an error
         resultAlertText.textContent("Correct!")
         setTimeout(hideResult, 1500);
     }
 
-    // if userChoice is not the correct answer, timer goes down 10s
-    if (userChoice !== correctAnswer) {
-        // I don't know if this will actually have the intended result, can't test it till I figure out other stuff
+    if (userChoice !== correct) {
         timeLeft = timeLeft - 10;
         showResult();
         resultAlertText.textContent("Incorrect!");
         setTimeout(hideResult, 1500);
 
     }
-    // if timer runs out, quiz ends
-    if (timeLeft === 0) {
-        endQuiz();
-    // } else {
-    //need to make it continue on with the quiz, and generate the next question
-    }
 }
 
-// if all questions have been answered, stop the timer
-// stopTimer();
-
-
-// event listener for submitting scores
-// submitScore.addEventListener("click", function() {
-
-// })
-
-
-// start the timer and modify the elements seen on screen when the quiz button is pressed
+// listener for button to start the quiz
 startButton.addEventListener("click", function () {
     setTimer();
-    // will hide the start button heading and instructions divs
     startDiv.classList.add("hidden");
     headingDiv.classList.add("hidden");
     instructionsDiv.classList.add("hidden");
-    // will reveal the divs for questions and multiple choice options
     questionsDiv.classList.remove("hidden");
     optionsDiv.classList.remove("hidden");
     startQuiz();
