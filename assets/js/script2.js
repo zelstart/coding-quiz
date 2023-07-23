@@ -20,6 +20,7 @@ var finalScore = document.getElementById("finalScore");
 var userScore = document.getElementById("user-score");
 var initialsField = document.getElementById("initials");
 var highScoresDiv = document.getElementById("viewHighScores");
+var backButton = document.getElementById("back");
 var liA = document.getElementById("a");
 var liB = document.getElementById("b");
 var liC = document.getElementById("c");
@@ -94,9 +95,8 @@ const questions = [
 
     }]
 
-// global variables 
-// will store scores here? idk if that will actually work
-var highScores = []; // storage for high scores
+
+var highScores = []; // storage for high scores?
 var timeLeft = 60; // number of seconds timer starts with
 var userChoice = ""; // container for user choice
 var i = 0; // will be our index number to advance through the questions array
@@ -120,22 +120,23 @@ function setTimer() {
 optionsDiv.addEventListener("click", function (event) {
     var target = event.target;
     if (target.matches(".multipleChoice")) {
-        var state = choiceList.getAttribute("data-click");
+        var clickState = choiceList.getAttribute("data-click");
         targetValue = target.textContent;
         userChoice = targetValue;
-        if (state === "false") {
+        if (clickState === "false") {
+            choiceList.dataset.click = "true"
             choiceList.setAttribute("data-click", "true");
-            console.log(state); // state still says false, but it should be true?
+            console.log(clickState); // state still says false, but it should be true???
         }
     }
 })
+
 
 
 // functions for showing/hiding the results popup 
 function hideResult() {
     resultAlertDiv.classList.add("hidden");
 }
-
 function showResult() {
     resultAlertDiv.classList.remove("hidden");
 }
@@ -148,6 +149,8 @@ function endQuiz() {
     finalScore.classList.remove("hidden");
 }
 
+
+
 // hides all elements on screen, reveals highScores element
 function viewHighScores() {
     startDiv.classList.add("hidden");
@@ -155,10 +158,11 @@ function viewHighScores() {
     instructionsDiv.classList.add("hidden");
     questionsDiv.classList.add("hidden");
     optionsDiv.classList.add("hidden");
-    finalScore.classList.add("hidden")
+    finalScore.classList.add("hidden");
     highScoresDiv.classList.remove("hidden");
 
 }
+
 
 
 // start quiz
