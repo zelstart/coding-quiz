@@ -35,10 +35,12 @@ header div {
 
 #scores {
     padding: 5px;
+    cursor: pointer;
 }
 
 #timer {
     padding: 5px;
+    cursor: default;
 }
 
 h2 {
@@ -115,6 +117,7 @@ a {
     background: var(--button);
     color: var(--bg);
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .hidden {
@@ -129,6 +132,7 @@ a {
     border-style: none;
     color: var(--bg);
     font-size: 1.4em;;
+    cursor: pointer;
 }
 
 .btn:hover {

@@ -24,13 +24,6 @@ var liC = document.getElementById("c");
 var liD = document.getElementById("d");
 
 
-// global variables 
-// will store scores here? idk if that will actually work
-var highScores = []; // storage for high scores
-var timeLeft = 60; // number of seconds timer starts with
-var userChoice = ""; // container for user choice
-var i = 0; // will be our index number to advance through the questions array
-var correct = questions[i].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
 
 
 
@@ -99,13 +92,20 @@ const questions = [
 
     }]
 
+// global variables 
+// will store scores here? idk if that will actually work
+var highScores = []; // storage for high scores
+var timeLeft = 60; // number of seconds timer starts with
+var userChoice = ""; // container for user choice
+var i = 0; // will be our index number to advance through the questions array
+var correct = questions[i].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
 
 
 
 // create the timer
 function setTimer() {
     var timerInterval = setInterval(function () {
-        if (timeLeft > 0 && i > questions.length) {
+        if (timeLeft > 0 && i < questions.length) {
             timeLeft--;
             timer.textContent = "Timer: " + timeLeft;
         } else {
@@ -152,19 +152,21 @@ function viewHighScores() {
 
 // start quiz
 function startQuiz() {
+    if (i < questions.length) {
     questionsText.textContent = questions[i].question;
     liA.textContent = questions[i].answers[0];
     liB.textContent = questions[i].answers[1];
     liC.textContent = questions[i].answers[2];
     liD.textContent = questions[i].answers[3];
-
+    }
+    
     // need to figure out how to make it wait until the event listener for the user's choice has heard the click and updated the value of userChoice
 
     if (i < questions.length) {
         checkAnswer();
         i++;
     }
-    if (i > questions.length) { // redundant because of startTimer function?
+    if (i > questions.length) { // redundant because of setTimer function?
         endQuiz()
     }
 }
