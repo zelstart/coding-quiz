@@ -1,7 +1,4 @@
 // use getElement to grab HTML elements that we'll need to manipulate. might have gone a little ham here, feels excessive
-var h1Tags = document.getElementsByTagName("h1");
-var h2Tags = document.getElementsByTagName("h2");
-var h3Tags = document.getElementsByTagName("h3");
 var startButton = document.getElementById("start");
 var viewScores = document.getElementById("scores");
 var timer = document.getElementById("timer");
@@ -10,26 +7,21 @@ var startDiv = document.getElementById("startDiv");
 var instructionsDiv = document.getElementById("instructions");
 var questionsDiv = document.getElementById("questions");
 var optionsDiv = document.getElementById("options");
-var choiceList = document.getElementById("choiceList")
+var highScoresDiv = document.getElementById("viewHighScores");
+var choiceList = document.getElementById("choiceList");
+var multipleChoice = document.getElementById("multipleChoice");
 var questionsText = document.getElementById("questionsText");
 var resultAlertDiv = document.getElementById("result");
 var resultAlertText = document.getElementById("resultAlert");
-var finalScore = document.getElementById("finalScore");
+var finalScoreDiv = document.getElementById("finalScore");
 var userScore = document.getElementById("user-score");
 var initialsField = document.getElementById("initials");
-var highScoresDiv = document.getElementById("viewHighScores");
+var backButton = document.getElementById("back");
+var clearButton = document.getElementById("clear");
 var liA = document.getElementById("a");
 var liB = document.getElementById("b");
 var liC = document.getElementById("c");
 var liD = document.getElementById("d");
-
-
-// global variables 
-// will store scores here? idk if that will actually work
-var highScores = [];
-var timeLeft = 60;
-i = 0;
-correct = questions[i].correctAnswer;
 
 
 
@@ -98,46 +90,55 @@ const questions = [
 
     }]
 
-
-// global variables that will check for whether or not all questions have been answered. 
-// probably not good and descriptive names, but couldn't come up with anything else
-// don't know which function I should put this in, but I think the logic would be:
-// if (currentQuestion === lastQuestion) {
-// endQuiz ();
-// }
-// and then something to say every time a question is printed to the screen, currentQuestion goes up by 1. not sure how that might work yet.
-var lastQuestion = questions.length;
-var currentQuestionNum = 0;
-// storage for user answer
-var userChoice = "";
-
+// JSON.parse(localStorage.getItem("highScores")) || 
+var highScores = JSON.parse(localStorage.getItem("highScores")) || [] // storage for high scores?
+var timeLeft = 60; // number of seconds timer starts with
+var userChoice = ""; // container for user choice
+var qIndex = 0; // will be our index number to advance through the questions array
 
 
 // create the timer
 function setTimer() {
     var timerInterval = setInterval(function () {
-        if (timeLeft > 0) {
+        if (timeLeft > 0 && qIndex < questions.length) {
             timeLeft--;
             timer.textContent = "Timer: " + timeLeft;
         } else {
-            // end the quiz, take the user to a page to input their initials and record the score
             endQuiz()
         }
-        // need an if statement to stop the timer when all questions have been answered ?
     }, 1000);
 }
 
 // an event listener for answer clicks
-// definitely not sure if this is the right way to do this
-optionsDiv.addEventListener("click", function () {
-    userChoice = ""
+optionsDiv.addEventListener("click", function(event) {
+    var buttonText = event.target.textContent;
+    if (event.target.matches(".multipleChoice")) {
+       // validate whether the answer was correct
+        checkAnswer(buttonText);
+        qIndex++;
+        getQuestion();
+    }
 })
+
+
+
+function getQuestion() {
+    if (qIndex < questions.length) {
+        questionsText.textContent = questions[qIndex].question;
+        liA.textContent = questions[qIndex].answers[0];
+        liB.textContent = questions[qIndex].answers[1];
+        liC.textContent = questions[qIndex].answers[2];
+        liD.textContent = questions[qIndex].answers[3];
+    } else {
+        endQuiz();
+    }
+}
+
 
 // functions for showing/hiding the results popup 
 function hideResult() {
     resultAlertDiv.classList.add("hidden");
 }
-
 function showResult() {
     resultAlertDiv.classList.remove("hidden");
 }
@@ -145,96 +146,105 @@ function showResult() {
 
 // hide the quiz elements on the page, reveal the "final results" element
 function endQuiz() {
-    var finalScores = {
-        initials: initialsField.value,
-        score: timeLeft
-    };
+    // hides questions + answers divs, reveals finalScore div
     questionsDiv.classList.add("hidden");
     optionsDiv.classList.add("hidden");
-    finalScore.classList.remove("hidden");
-    // user's score should be equal to the time left on the timer
+    resultAlertDiv.classList.add("hidden");
+    finalScoreDiv.classList.remove("hidden");
     userScore.textContent = "Score: " + timeLeft;
-    // save the user's initials and the score as an object in localstorage
-    // need to make it not overwrite old scores, just add
-    localStorage.setItem("finalScores", JSON.stringify(finalScores))
+    saveScore();
 }
 
-function viewHighScores() {
-    startDiv.classList.add("hidden");
-    headingDiv.classList.add("hidden");
-    instructionsDiv.classList.add("hidden");
-    highScoresDiv.classList.remove("hidden");
+
+
+// save the submitted value of the initials field and the score
+function saveScore() {
+    var userScore = timeLeft;
+    var userName = initialsField.value;
+
+    var savedScore = {
+        'name': userName,
+        'score': userScore,
+    }
+    highScores.push(savedScore);
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+
 }
 
+// append each item in the highScores variable as a list item to the page
+function addScores() {
+    var highScoresUl = document.getElementById("viewHighScores");
+    var scoresList = JSON.parse(localStorage.getItem("highScores"))
+    
+    for (var i = 0; i < highScores.length; i++) {
+        var addScore = document.createElement("li");
+        addScore.textContent = "Player: " + highScores[i].name + " // Score: " + highScores[i].score;
+        highScoresUl.appendChild(addScore);
+    }
+
+}
 
 // start quiz
 function startQuiz() {
-    // i think this will work? when a choice is made, i++? 
-
-
-    // Questions and multiple choice options need to be pulled from the questions object and put here
-    // It needs to cycle through all 5 questions, moving to the next one after the previous has an answer selected
-    questionsText.textContent = questions[i].question;
-    liA.textContent = questions[i].answers[0];
-    liB.textContent = questions[i].answers[1];
-    liC.textContent = questions[i].answers[2];
-    liD.textContent = questions[i].answers[3];
-
-    // need to make it record the answer clicked by the user
-
-    checkAnswer();
-}
-
-
-
-function checkAnswer() {
-    // if userChoice is the correct answer
-    if (userChoice === correctAnswer) {
-        showResult();
-        // these are giving me an error
-        resultAlertText.textContent("Correct!")
-        setTimeout(hideResult, 1500);
-    }
-
-    // if userChoice is not the correct answer, timer goes down 10s
-    if (userChoice !== correctAnswer) {
-        // I don't know if this will actually have the intended result, can't test it till I figure out other stuff
-        timeLeft = timeLeft - 10;
-        showResult();
-        resultAlertText.textContent("Incorrect!");
-        setTimeout(hideResult, 1500);
-
-    }
-    // if timer runs out, quiz ends
-    if (timeLeft === 0) {
-        endQuiz();
-    // } else {
-    //need to make it continue on with the quiz, and generate the next question
-    }
-}
-
-// if all questions have been answered, stop the timer
-// stopTimer();
-
-
-// event listener for submitting scores
-// submitScore.addEventListener("click", function() {
-
-// })
-
-
-// start the timer and modify the elements seen on screen when the quiz button is pressed
-startButton.addEventListener("click", function () {
     setTimer();
-    // will hide the start button heading and instructions divs
     startDiv.classList.add("hidden");
     headingDiv.classList.add("hidden");
     instructionsDiv.classList.add("hidden");
-    // will reveal the divs for questions and multiple choice options
     questionsDiv.classList.remove("hidden");
     optionsDiv.classList.remove("hidden");
+    getQuestion();
+}
+
+// checks user's answer against current question's correct answer
+function checkAnswer(userChoice) {
+    var correct = questions[qIndex].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
+    if (userChoice === correct) {
+        showResult();
+        resultAlertText.innerText = "Correct!"
+        setTimeout(hideResult, 1500);
+    }
+    if (userChoice !== correct) {
+        timeLeft = timeLeft - 10;
+        showResult();
+        resultAlertText.innerText = "Incorrect!";
+        setTimeout(hideResult, 1500);
+    }
+}
+// hides all irrelevant elements, reveals the viewScores div
+viewScores.addEventListener("click", function() {
+    startDiv.classList.add("hidden");
+    headingDiv.classList.add("hidden");
+    instructionsDiv.classList.add("hidden");
+    questionsDiv.classList.add("hidden");
+    optionsDiv.classList.add("hidden");
+    resultAlertDiv.classList.add("hidden");
+    finalScoreDiv.classList.add("hidden");
+    highScoresDiv.classList.remove("hidden");
+    timer.classList.add("hidden")
+    var viewscoresbtn = document.getElementById("scores")
+    viewscoresbtn.classList.add("hidden")
+    addScores();
+})
+
+
+backButton.addEventListener("click", function(){
+    location.reload();
+})
+// event listener that will clear all recorded scores
+clearButton.addEventListener("click", function() {
+    
+})
+
+// listener for button to start the quiz
+startButton.addEventListener("click", function () {
     startQuiz();
 });
 
+// add an event listener for submit scores
+    // save scores to localStorage 
+    // they should be added to the global variable highScores, and should not overwrite each other
 
+// add a function for the view highscores page
+    // should access the highscores 
+    // should sort the highscores by highest score
 

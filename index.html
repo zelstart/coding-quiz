@@ -15,9 +15,7 @@
 
     <!-- View High Scores -->
     <div id="scores">
-      <a href="highscores.html">
         <p>View High Scores</p>
-      </a>
     </div>
 
     <!-- Timer -->
@@ -71,16 +69,25 @@
       <h2 id="user-score"></h2>
       <form>
         <label for="initials">Initials:</label>
-        <input type="text" id="initials" name="initials">
+        <input type="input" id="initials" name="initials">
+        <br> <br>
+        <input type="submit" value="Submit" class="btn" id="submit-score">
       </form>
-      <br>
-      <button class="btn" id="submit-score">Submit</button>
-      <button class="btn" id="reset">Reset</button>
+    </div>
+
+      <!-- High Scores -->
+    <div class="card1 hidden" id="viewHighScores">
+      <h1>Recent Scores:</h1>
+      <ul class="highscoresList">
+      </ul>
+  
+<button class="btn2" id="back">Back</button>
+<button class="btn2" id="clear">Clear</button>
     </div>
 
     <!-- Footer -->
     <footer class="footer"> </footer>
 
   </div>
-  <script src="assets/js/script2.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>

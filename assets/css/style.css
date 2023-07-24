@@ -136,6 +136,22 @@ a {
     cursor: pointer;
 }
 
+.btn2 {
+    font-family: 'Courier New', Courier, monospace;
+    background: var(--accent);
+    margin: 15px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 8px; 
+    border-style: none;
+    color: var(--bg);
+    font-size: 1.2em;;
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
+
+}
 .btn:hover {
     background: var(--button);
 }
