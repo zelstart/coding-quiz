@@ -28,8 +28,6 @@ var liD = document.getElementById("d");
 
 
 
-
-
 // Create an object containing all of the questions, options and answers
 const questions = [
     {
@@ -96,11 +94,10 @@ const questions = [
     }]
 
 
-var highScores = []; // storage for high scores?
+var highScores = JSON.parse(localStorage.getItem("finalScores")) || []; // storage for high scores?
 var timeLeft = 60; // number of seconds timer starts with
 var userChoice = ""; // container for user choice
 var i = 0; // will be our index number to advance through the questions array
-var correct = questions[i].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
 
 
 
@@ -117,20 +114,30 @@ function setTimer() {
 }
 
 // an event listener for answer clicks
+// does this need to be inside startQuiz function??? 
 optionsDiv.addEventListener("click", function (event) {
-    var target = event.target;
-    if (target.matches(".multipleChoice")) {
-        var clickState = choiceList.getAttribute("data-click");
-        targetValue = target.textContent;
-        userChoice = targetValue;
-        if (clickState === "false") {
-            choiceList.dataset.click = "true"
-            choiceList.setAttribute("data-click", "true");
-            console.log(clickState); // state still says false, but it should be true???
-        }
+    var buttonText = event.target.textContent;
+    if (event.target.matches(".multipleChoice")) {
+       // this is where we want to validate whether or not the answer was right
+        checkAnswer(buttonText);
+        i++;
+        getQuestion();
     }
 })
 
+function getQuestion() {
+    if (i < questions.length) {
+        questionsText.textContent = questions[i].question;
+        liA.textContent = questions[i].answers[0];
+        liB.textContent = questions[i].answers[1];
+        liC.textContent = questions[i].answers[2];
+        liD.textContent = questions[i].answers[3];
+
+        console.log(i);
+    } else {
+        endQuiz();
+    }
+}
 
 
 // functions for showing/hiding the results popup 
@@ -151,54 +158,43 @@ function endQuiz() {
 
 
 
-// hides all elements on screen, reveals highScores element
-function viewHighScores() {
+// start quiz
+function startQuiz() {
+    setTimer();
     startDiv.classList.add("hidden");
     headingDiv.classList.add("hidden");
     instructionsDiv.classList.add("hidden");
-    questionsDiv.classList.add("hidden");
-    optionsDiv.classList.add("hidden");
-    finalScore.classList.add("hidden");
-    highScoresDiv.classList.remove("hidden");
+    questionsDiv.classList.remove("hidden");
+    optionsDiv.classList.remove("hidden");
+    getQuestion();
+    
+// i was hoping to progress the startQuiz function by having it wait for a data- attribute to be changed, which I wanted to happen on a click
+// this doesn't seem to work
+    // var clickState = choiceList.getAttribute("data-click");
 
-}
+    // if (clickState === "true") {
 
-
-
-// start quiz
-function startQuiz() {
-    if (i < questions.length) {
-        questionsText.textContent = questions[i].question;
-        liA.textContent = questions[i].answers[0];
-        liB.textContent = questions[i].answers[1];
-        liC.textContent = questions[i].answers[2];
-        liD.textContent = questions[i].answers[3];
-    }
-
-    // need to figure out how to make it wait until the event listener for the user's choice has heard the click and updated the value of userChoice
-    var clickState = choiceList.getAttribute("data-click");
-
-    if (clickState === "true") {
-
-        if (i < questions.length) {
-            checkAnswer();
-            i++;
-        }
-    }
+    //     if (i < questions.length) {
+    //         checkAnswer();
+    //         i++;
+    //     }
+    // }
 }
 
 // checks user's answer against current question's correct answer
-function checkAnswer() {
+function checkAnswer(userChoice) {
+    var correct = questions[i].correctAnswer; // will store the correct answer for the current question to be compared with userChoice
+    console.log(userChoice, correct)
     if (userChoice === correct) {
         showResult();
-        resultAlertText.textContent("Correct!")
+        resultAlertText.innerText = "Correct!"
         setTimeout(hideResult, 1500);
     }
 
     if (userChoice !== correct) {
         timeLeft = timeLeft - 10;
         showResult();
-        resultAlertText.textContent("Incorrect!");
+        resultAlertText.innerText = "Incorrect!";
         setTimeout(hideResult, 1500);
 
     }
@@ -206,14 +202,13 @@ function checkAnswer() {
 
 // listener for button to start the quiz
 startButton.addEventListener("click", function () {
-    setTimer();
-    startDiv.classList.add("hidden");
-    headingDiv.classList.add("hidden");
-    instructionsDiv.classList.add("hidden");
-    questionsDiv.classList.remove("hidden");
-    optionsDiv.classList.remove("hidden");
     startQuiz();
 });
 
+// add an event listener for submit scores
+    // save scores to localStorage 
+    // they should be added to the global variable highScores, and should not overwrite each other
 
+// add a function for the view highscores page
+    // should access the highscores 
 
