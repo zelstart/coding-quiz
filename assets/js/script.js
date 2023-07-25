@@ -150,7 +150,6 @@ function endQuiz() {
     // hides questions + answers divs, reveals finalScore div
     questionsDiv.classList.add("hidden");
     optionsDiv.classList.add("hidden");
-    resultAlertDiv.classList.add("hidden");
     finalScoreDiv.classList.remove("hidden");
     userScore.textContent = "Score: " + timeLeft;
 }
@@ -198,13 +197,13 @@ function checkAnswer(userChoice) {
     if (userChoice === correct) {
         showResult();
         resultAlertText.innerText = "Correct!"
-        setTimeout(hideResult, 1500);
+        setTimeout(hideResult, 1000);
     }
     if (userChoice !== correct) {
         timeLeft = timeLeft - 10;
         showResult();
         resultAlertText.innerText = "Incorrect!";
-        setTimeout(hideResult, 1500);
+        setTimeout(hideResult, 1000);
     }
 }
 

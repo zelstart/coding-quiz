@@ -58,11 +58,6 @@
       </ul>
     </div>
 
-    <!-- Correct/Incorrect -->
-    <!-- Will appear when a guess has been made, contents of h3 tag will change depending on if the question was answered correctly -->
-    <div class="card2 hidden" id="result">
-      <h3 id="resultAlert"></h3>
-    </div>
 
     <!-- Final Score -->
     <div class="card4 hidden" id="finalScore">
@@ -74,13 +69,14 @@
         id="initials"
         name="initials">
         <br> <br>
-        <input
-        type="submit"
-        value="Submit"
-        class="btn"
-        id="submit-score"
-        >
+        <button class="btn"id="submit-score">Submit</button>
       </form>
+    </div>
+
+        <!-- Correct/Incorrect -->
+    <!-- Will appear when a guess has been made, contents of h3 tag will change depending on if the question was answered correctly -->
+    <div class="card2 hidden" id="result">
+      <h3 id="resultAlert"></h3>
     </div>
 
       <!-- High Scores -->

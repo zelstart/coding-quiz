@@ -1,40 +1,17 @@
 # Coding Quiz
 ## Description 
-
-### User Story
-```
-AS A coding boot camp student
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
-SO THAT I can gauge my progress compared to my peers
-```
-
-### Acceptance Criteria
-```
-GIVEN I am taking a code quiz
-
-WHEN I click the start button
-THEN a timer starts and I am presented with a question
-
-WHEN I answer a question
-THEN I am presented with another question
-
-WHEN I answer a question incorrectly
-THEN time is subtracted from the clock
-
-WHEN all questions are answered or the timer reaches 0
-THEN the game is over
-
-WHEN the game is over
-THEN I can save my initials and score
-```
+This is a simple coding quiz, that will test the user on their knowledge of JavaScript. It will record the user's score and initials and add them to a list of highscores. 
 
 ## Screenshots
+![GIF of coding quiz](assets/images/coding-quiz.gif)
+
 
 ## Credits
-[How to make a js quiz](https://www.codingnepalweb.com/quiz-app-with-timer-javascript/)  - mostly just used the format for making an array containing the questions and answers.
-
+[Make a js Quiz](https://www.codingnepalweb.com/quiz-app-with-timer-javascript/)  - mostly just used the format for making an array containing the questions and answers.
+Ben Martin - tutoring help, reorganizing a lot of the javascript to make it work
 
 ## License
 MIT
 
 ## Deployed Website Link
+https://zelstart.github.io/coding-quiz/
