@@ -17,6 +17,7 @@ var finalScoreDiv = document.getElementById("finalScore");
 var userScore = document.getElementById("user-score");
 var initialsField = document.getElementById("initials");
 var backButton = document.getElementById("back");
+var submitScore = document.getElementById("submit-score")
 var clearButton = document.getElementById("clear");
 var liA = document.getElementById("a");
 var liB = document.getElementById("b");
@@ -152,23 +153,19 @@ function endQuiz() {
     resultAlertDiv.classList.add("hidden");
     finalScoreDiv.classList.remove("hidden");
     userScore.textContent = "Score: " + timeLeft;
-    saveScore();
 }
-
 
 
 // save the submitted value of the initials field and the score
 function saveScore() {
     var userScore = timeLeft;
     var userName = initialsField.value;
-
     var savedScore = {
         'name': userName,
         'score': userScore,
     }
     highScores.push(savedScore);
     localStorage.setItem("highScores", JSON.stringify(highScores));
-
 }
 
 // append each item in the highScores variable as a list item to the page
@@ -210,6 +207,12 @@ function checkAnswer(userChoice) {
         setTimeout(hideResult, 1500);
     }
 }
+
+// executes saveScore function on submit
+submitScore.addEventListener("click", function(){
+    saveScore();
+})
+
 // hides all irrelevant elements, reveals the viewScores div
 viewScores.addEventListener("click", function() {
     startDiv.classList.add("hidden");
@@ -232,7 +235,8 @@ backButton.addEventListener("click", function(){
 })
 // event listener that will clear all recorded scores
 clearButton.addEventListener("click", function() {
-    
+    localStorage.removeItem("highScores");
+    location.reload();
 })
 
 // listener for button to start the quiz
