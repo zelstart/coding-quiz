@@ -7,7 +7,7 @@ This is a simple coding quiz, that will test the user on their knowledge of Java
 
 
 ## Credits
-[Make a js Quiz](https://www.codingnepalweb.com/quiz-app-with-timer-javascript/)  - mostly just used the format for making an array containing the questions and answers.
+[Make a js Quiz](https://www.codingnepalweb.com/quiz-app-with-timer-javascript/)  - mostly just used the format for making an array containing the questions and answers.  
 Ben Martin - tutoring help, reorganizing a lot of the javascript to make it work
 
 ## License
