@@ -1,4 +1,4 @@
-// use getElement to grab HTML elements that we'll need to manipulate. might have gone a little ham here, feels excessive
+// use getElement to grab HTML elements that we'll need to manipulate.
 var startButton = document.getElementById("start");
 var viewScores = document.getElementById("scores");
 var timer = document.getElementById("timer");
@@ -23,7 +23,6 @@ var liA = document.getElementById("a");
 var liB = document.getElementById("b");
 var liC = document.getElementById("c");
 var liD = document.getElementById("d");
-
 
 
 // Create an object containing all of the questions, options and answers
@@ -91,7 +90,6 @@ const questions = [
 
     }]
 
-// JSON.parse(localStorage.getItem("highScores")) || 
 var highScores = JSON.parse(localStorage.getItem("highScores")) || [] // storage for high scores?
 var timeLeft = 60; // number of seconds timer starts with
 var userChoice = ""; // container for user choice
@@ -122,7 +120,7 @@ optionsDiv.addEventListener("click", function(event) {
 })
 
 
-
+// changes the question and choices based on how far along in the quiz you are
 function getQuestion() {
     if (qIndex < questions.length) {
         questionsText.textContent = questions[qIndex].question;
@@ -177,10 +175,9 @@ function addScores() {
         addScore.textContent = "Player: " + highScores[i].name + " // Score: " + highScores[i].score;
         highScoresUl.appendChild(addScore);
     }
-
 }
 
-// start quiz
+// start quiz hides and unhides certain divs, sets timer and grabs first question
 function startQuiz() {
     setTimer();
     startDiv.classList.add("hidden");
@@ -242,12 +239,4 @@ clearButton.addEventListener("click", function() {
 startButton.addEventListener("click", function () {
     startQuiz();
 });
-
-// add an event listener for submit scores
-    // save scores to localStorage 
-    // they should be added to the global variable highScores, and should not overwrite each other
-
-// add a function for the view highscores page
-    // should access the highscores 
-    // should sort the highscores by highest score
 
